@@ -22,10 +22,14 @@ $jsUrl  = BASE_URL . '/' . $jsFile . '?v=' . filemtime($jsPath);
 $audiojsFile = 'assets/audio.js';
 $audiojsPath = __DIR__ . '/' . $audiojsFile;
 $audiojsUrl  = BASE_URL . '/' . $audiojsFile . '?v=' . filemtime($audiojsPath);
+
+$websocketjsFile = 'assets/websocket.js';
+$websocketjsPath = __DIR__ . '/' . $websocketjsFile;
+$websocketjsUrl  = BASE_URL . '/' . $websocketjsFile . '?v=' . filemtime($websocketjsPath);
 cacheHeaders();
 ?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -37,9 +41,9 @@ cacheHeaders();
         window.ECRAN_VOLUME = <?= intval($ecran['playlist_volume'] ?? 50) ?>;
     </script>
 
+    <script src="<?= $websocketjsUrl ?>" defer></script>
     <script src="<?= $audiojsUrl ?>" defer></script>
     <script src="<?= $jsUrl ?>" defer></script>
-    <?= '<!-- ' . json_encode($ecran, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . ' -->' ?>
 </head>
 
 <body>
