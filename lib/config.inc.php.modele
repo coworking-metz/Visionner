@@ -1,0 +1,9 @@
+<?php
+
+if(isset($_GET['debug'])) {
+	error_reporting(E_ALL);
+	ini_set('display_errors', 'On');
+}
+define('BASE_URL', 'http://visionner.test');
+define('SB_URL', 'https://lvsbvjweppdlhmjuqqvt.supabase.co/rest/v1/');
+define('SB_KEY', '');

@@ -1,0 +1,146 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: black;
+}
+
+#screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+
+    >div {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        pointer-events: none;
+    }
+}
+
+.slide-body {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: var(--_background-color, #fee100);
+}
+
+.slide-content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    margin-top: 1.8rem;
+    font-family: 'evelethclean_thin', 'Arial';
+    font-size: 2.1vw;
+    line-height: 1;
+    color: var(--_color, black);
+    text-align: center;
+    display: grid;
+    place-items: center;
+
+    h2,
+    h3 {
+        margin: 0;
+    }
+
+    h2 {
+        font-size: 6vw;
+        line-height: 1;
+    }
+
+    h3 {
+        font-family: 'evelethclean_regular', 'Arial black';
+        font-size: 4vw;
+        line-height: 1;
+    }
+
+    strong {
+        font-family: 'evelethclean_regular', 'Arial black';
+        color: inherit;
+    }
+
+    .slide-text {
+        max-width: 60%;
+        margin: 0 auto;
+    }
+
+    .ql-font-monospace {
+        font-family: monospace;
+    }
+
+    .ql-font-sans-serif {
+        font-family: sans-serif;
+    }
+
+    .ql-font-serif {
+        font-family: serif;
+    }
+
+    .ql-size-large {
+        font-size: 2.8vw;
+    }
+
+    .ql-size-huge {
+        font-size: 3.2vw;
+    }
+
+    .ql-size-small {
+        font-size: 1.5vw;
+    }
+}
+
+.slide-img {
+    z-index: 1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: var(--_background-opacity, 1);
+
+}
+
+.qr {
+    z-index: 3;
+    width: 10vw;
+    height: 10vw;
+    position: absolute;
+    bottom: 1.5vw;
+    right: 1.5vw;
+    background-color: white;
+    padding: .5vw;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+    }
+}
+
+#player {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+}
