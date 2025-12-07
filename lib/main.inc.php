@@ -4,7 +4,15 @@ include __DIR__ . '/config.inc.php';
 
 function cacheHeaders()
 {
-    header("Cache-Control: public, max-age=3600, s-maxage=3600");
+
+if(isset($_GET['nocache'])) {
+	header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+} else {
+
+	header("Cache-Control: public, max-age=600, s-maxage=600");
+}
 }
 /**
  * Basic Supabase request helper
@@ -197,7 +205,10 @@ function enrichir_ecran($ecran)
         );
     }
 
-    $ecran['slides'] = array_values($eligible);
+    $slides = array_values($eligible);
+
+    $ecran['slides'] = array_map(function($slide) { return enrichir_slide($slide);},$slides);
+
     return $ecran;
 }
 
@@ -218,4 +229,39 @@ function getSlidesByIds($ids)
             'id'     => 'in.(' . $idList . ')'
         ]
     );
+}
+function getSlide($id)
+{
+    if (!$id) return null;
+
+    $data = supabase_request(
+        'slides',
+        'GET',
+        [
+            'select' => '*',
+            'id'     => 'eq.' . $id
+        ]
+    );
+
+    if (!$data || !is_array($data)) return null;
+    if (!isset($data[0])) return null;
+
+    return enrichir_slide($data[0]);
+}
+
+function supabase_cdn($url) {
+
+	return str_replace('https://lvsbvjweppdlhmjuqqvt.supabase.co/storage/v1/object/public/','https://images.coworking-metz.fr/supabase/',$url);
+
+}
+function enrichir_slide($slide) {
+	if(!empty($slide['rich'])) return $slide;
+	$slide['rich']=true;
+
+	if(!empty($slide['meta']['image'])) {
+		$slide['meta']['image'] = supabase_cdn($slide['meta']['image']);
+	}
+
+//	print_r($slide);
+	return $slide;
 }
