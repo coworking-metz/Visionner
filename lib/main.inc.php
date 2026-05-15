@@ -58,7 +58,6 @@ function getEcran($slug)
             'trash'  => 'eq.false'
         ]
     );
-
     if (!$data) return null;
 
     foreach ($data as $ecran) {
@@ -72,7 +71,7 @@ function getEcran($slug)
  */
 function isInTimeRange($item)
 {
-    if (empty($item['display_times'])) return true;
+    if (isset($_GET['all']) || empty($item['display_times'])) return true;
 
     $ranges = json_decode($item['display_times'], true);
     if (!$ranges || !is_array($ranges)) return true;
@@ -242,6 +241,7 @@ function getSlide($id)
             'id'     => 'eq.' . $id
         ]
     );
+
 
     if (!$data || !is_array($data)) return null;
     if (!isset($data[0])) return null;

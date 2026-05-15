@@ -18,7 +18,6 @@ if ($ecran) {
     exit;
 	}
 }
-
 $cssFile = 'assets/slides.css';
 $cssPath = __DIR__ . '/' . $cssFile;
 $cssUrl  = BASE_URL . '/' . $cssFile . '?v=' . date('Y-m-d-H-i-s',filemtime($cssPath));
