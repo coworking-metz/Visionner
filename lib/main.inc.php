@@ -158,6 +158,8 @@ function enrichir_ecran($ecran)
     }
 
     $slides = getSlidesByIds($slideIds);
+
+
     if (!$slides) {
         $ecran['slides'] = [];
         return $ecran;

@@ -110,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keyup', e => {
         if (e.code === 'ArrowRight') next();
         if (e.code === 'ArrowLeft') prev();
+        if (e.code === 'ArrowDown') document.location.reload(true);
     });
 
     renderSlide(index);
