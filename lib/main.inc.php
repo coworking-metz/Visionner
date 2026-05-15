@@ -55,16 +55,14 @@ function getEcran($slug)
         'GET',
         [
             'select' => '*',
-            'trash'  => 'eq.false'
+            'slug'   => 'eq.' . $slug,
+            'trash'  => 'eq.false',
+            'limit'  => 1,
         ]
     );
+    if (!$data || !isset($data[0])) return null;
 
-    if (!$data) return null;
-
-    foreach ($data as $ecran) {
-        if ($ecran['slug'] === $slug) return enrichir_ecran($ecran);
-    }
-    return null;
+    return enrichir_ecran($data[0]);
 }
 
 /**
@@ -72,7 +70,7 @@ function getEcran($slug)
  */
 function isInTimeRange($item)
 {
-    if (empty($item['display_times'])) return true;
+    if (isset($_GET['all']) || empty($item['display_times'])) return true;
 
     $ranges = json_decode($item['display_times'], true);
     if (!$ranges || !is_array($ranges)) return true;
@@ -140,33 +138,27 @@ function sortSlidesByIds($slides, $ids)
  */
 function enrichir_ecran($ecran)
 {
-    // get links screen↔slides
+    // get links for this screen only
     $liens = supabase_request(
         'liens_ecrans_slides',
         'GET',
-        ['select' => '*']
+        [
+            'select'   => 'slide_id',
+            'ecran_id' => 'eq.' . $ecran['id'],
+        ]
     );
     if (!$liens) {
         $ecran['slides'] = [];
         return $ecran;
     }
 
-    // extract slide ids linked to this screen
-    $slideIds = [];
-    foreach ($liens as $l) {
-        if ($l['ecran_id'] == $ecran['id']) $slideIds[] = $l['slide_id'];
-    }
+    $slideIds = array_map(fn($l) => $l['slide_id'], $liens);
 
-    $slides = getSlidesByIds($slideIds);
-
-
-    if (!$slides) {
+    $activeSlides = getSlidesByIds($slideIds);
+    if (!$activeSlides) {
         $ecran['slides'] = [];
         return $ecran;
     }
-
-    // filter active slides
-    $activeSlides = array_filter($slides, fn($s) => !empty($s['active']));
 
     // optional sort order if screen defines it
     if (!empty($ecran['slideSort'])) {
@@ -228,7 +220,8 @@ function getSlidesByIds($ids)
         'GET',
         [
             'select' => '*',
-            'id'     => 'in.(' . $idList . ')'
+            'id'     => 'in.(' . $idList . ')',
+            'active' => 'eq.true',
         ]
     );
 }
@@ -244,6 +237,7 @@ function getSlide($id)
             'id'     => 'eq.' . $id
         ]
     );
+
 
     if (!$data || !is_array($data)) return null;
     if (!isset($data[0])) return null;
